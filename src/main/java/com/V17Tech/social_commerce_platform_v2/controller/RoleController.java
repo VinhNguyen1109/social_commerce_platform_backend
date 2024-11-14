@@ -20,7 +20,7 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.OK).body(roleService.saveRole(role));
     }
     @GetMapping("/check")
-    @Permission(role = "client_admin")
+    @Permission(role = "client_user")
     public ResponseEntity<?> getRoleByName(){
         if(roleService.getRoleByName("client_user") == null)
             return ResponseEntity.status(HttpStatus.OK).body("null");

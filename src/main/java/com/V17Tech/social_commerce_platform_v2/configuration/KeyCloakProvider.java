@@ -29,6 +29,8 @@ import java.util.concurrent.Executors;
 @Getter
 public class KeyCloakProvider {
 
+    @Autowired
+    private ObjectMapper objectMapper;
     private static final Logger logger = LoggerFactory.getLogger(KeyCloakProvider.class);
     @Value("${keycloak.auth.server.url}")
     public String serverURL;
@@ -68,7 +70,7 @@ public class KeyCloakProvider {
                 .field("refresh_token", refreshToken)
                 .field("grant_type", "refresh_token")
                 .asJson();
-        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new ObjectMapper();
+
         return objectMapper.readValue(response.getBody().toString(), TokenResponse.class);
     }
 

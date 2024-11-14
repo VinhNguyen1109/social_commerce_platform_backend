@@ -13,6 +13,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  data:
+    redis:
+      host: localhost
 
 jwt:
   auth:
@@ -32,6 +35,8 @@ credential:
   secret-admin: NfbEHwA2deO6sCyPJVejqM2kOkkyzL1N
 server:
   port: 8081
+cache:
+  default-ttl-in-seconds: 20
 
 
 
