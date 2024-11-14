@@ -1,0 +1,38 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/demojava
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  datasource:
+    url: jdbc:mariadb://localhost:3306/social-commerce-platform?useSSL=false
+    username: root
+    password: 123
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  auth:
+    converter:
+      resource-id: demokeycloak
+      principle-attribute: preferred_username
+keycloak:
+  auth:
+    server:
+      url: http://localhost:8080
+  realm: demojava
+  admin:
+    username: sa
+    password: 123
+  clientId: demokeycloak
+credential:
+  secret-admin: NfbEHwA2deO6sCyPJVejqM2kOkkyzL1N
+server:
+  port: 8081
+
+
+
+
