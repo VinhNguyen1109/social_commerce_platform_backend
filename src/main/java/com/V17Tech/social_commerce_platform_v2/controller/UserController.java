@@ -1,19 +1,19 @@
 package com.V17Tech.social_commerce_platform_v2.controller;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.V17Tech.social_commerce_platform_v2.configuration.KeyCloakProvider;
-import lombok.RequiredArgsConstructor;
 import com.V17Tech.social_commerce_platform_v2.model.LoginRequest;
 import com.V17Tech.social_commerce_platform_v2.model.LoginUserDTO;
 import com.V17Tech.social_commerce_platform_v2.model.UserDTO;
+import com.V17Tech.social_commerce_platform_v2.service.AccountService;
+import com.V17Tech.social_commerce_platform_v2.service.KeycloakAdminClientService;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.V17Tech.social_commerce_platform_v2.service.AccountService;
-import com.V17Tech.social_commerce_platform_v2.service.KeycloakAdminClientService;
 
 import java.io.IOException;
 

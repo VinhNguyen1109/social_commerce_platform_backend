@@ -58,10 +58,10 @@ public class KeycloakAdminClientServiceImpl implements KeycloakAdminClientServic
         Response response = usersResource.create(kcUser);
         if(response.getStatus() == 201){
             //lấy userid trong keycloak
-           String userIdKeycloak = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+            //lấy phần cuối cùng của path
+            String userIdKeycloak = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
             userDTO.setKeycloakId(userIdKeycloak);
             logger.debug("get keycloak user id with value: " + userIdKeycloak);
-
             CredentialRepresentation passwordCred = new CredentialRepresentation();
             passwordCred.setTemporary(false);
             passwordCred.setType(CredentialRepresentation.PASSWORD);

@@ -45,6 +45,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public LoginUserDTO login(LoginRequest loginRequest)  {
                 AccountEntity accountEntity = accountRepository.getFirstByUsername(loginRequest.getUsername());
+                if(accountEntity == null) {
+                    return null;
+                }
                 Keycloak keycloak = kcProvider
                         .newKeycloakBuilderWithPasswordCredentials(loginRequest.getUsername(), loginRequest.getPassword())
                         .build();
@@ -59,7 +62,6 @@ public class AccountServiceImpl implements AccountService {
                         .firstname(accountEntity.getFirstname())
                         .build();
     }
-
     @Override
     public String resetPassword(String token, String newPassword) {
         String username =  CommonUtil.getUserNameFromToken(token);
