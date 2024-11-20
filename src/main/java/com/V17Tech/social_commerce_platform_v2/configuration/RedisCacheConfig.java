@@ -35,4 +35,6 @@ public class RedisCacheConfig {
                 .entryTtl(Duration.ofSeconds(ttl)) // * mặc định của cache là 20s
                 .disableCachingNullValues();
     }
+
+
 }

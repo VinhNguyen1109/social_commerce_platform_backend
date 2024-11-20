@@ -44,8 +44,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login( @RequestBody LoginRequest loginRequest) {
-        sender.send(testTopic, "check kafka");
-        logger.info("check debug working");
             LoginUserDTO loginUserDTO = accountService.login(loginRequest);
             if(loginUserDTO == null){
                 return ResponseEntity.status(HttpStatus.OK).body("Tài khoản không tồn tại");
@@ -66,6 +64,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(name = "Authorization", required = true) String token){
+        logger.info("token : " + token);
         return ResponseEntity.status(HttpStatus.OK).body(accountService.logout( token));
     }
 

@@ -15,12 +15,17 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.V17Tech.social_commerce_platform_v2.repository.AccountRepository;
 import com.V17Tech.social_commerce_platform_v2.util.BusinessException;
 import com.V17Tech.social_commerce_platform_v2.util.CommonUtil;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -31,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final PasswordEncoder passwordEncoder;
 
-
+    private final RedisTemplate<String, String> redisTemplate;
     @Override
     public AccountEntity getFirstByUsername(String username) {
         return accountRepository.getFirstByUsername(username);
@@ -52,16 +57,22 @@ public class AccountServiceImpl implements AccountService {
                         .newKeycloakBuilderWithPasswordCredentials(loginRequest.getUsername(), loginRequest.getPassword())
                         .build();
                 AccessTokenResponse accessTokenResponse = keycloak.tokenManager().getAccessToken();
-                return LoginUserDTO.builder()
-                        .accessToken(accessTokenResponse.getToken())
-                        .tokenType(accessTokenResponse.getTokenType())
-                        .refreshToken(accessTokenResponse.getRefreshToken())
-                        .expiresIn(accessTokenResponse.getExpiresIn())
-                        .username(loginRequest.getUsername())
-                        .lastname(accountEntity.getLastname())
-                        .firstname(accountEntity.getFirstname())
-                        .build();
+        redisTemplate.opsForValue().set("token of:" + loginRequest.getUsername(), accessTokenResponse.getToken(), 1, TimeUnit.MINUTES);
+
+        return LoginUserDTO.builder()
+                .accessToken(accessTokenResponse.getToken())
+                .tokenType(accessTokenResponse.getTokenType())
+                .refreshToken(accessTokenResponse.getRefreshToken())
+                .expiresIn(accessTokenResponse.getExpiresIn())
+                .username(loginRequest.getUsername())
+                .lastname(accountEntity.getLastname())
+                .firstname(accountEntity.getFirstname())
+                .build();
     }
+
+
+
+
     @Override
     public String resetPassword(String token, String newPassword) {
         String username =  CommonUtil.getUserNameFromToken(token);
@@ -95,9 +106,16 @@ public class AccountServiceImpl implements AccountService {
             UsersResource userResource = kcProvider.getKeycloakUserResource();
             UserResource user = userResource.get(accountEntity.getKeycloakId());
             user.logout();
+            deleteCacheToken(username);
+            redisTemplate.delete("token of:" + username);
             return "Logout thành công";
         } catch (Exception e) {
             throw new BusinessException("Lỗi khi logout: " + e.getMessage());
         }
+    }
+
+    @CacheEvict( value = "access-token", key = "#username")
+    public void deleteCacheToken(String username){
+        logger.info("delete access-toke of " + username);
     }
 }

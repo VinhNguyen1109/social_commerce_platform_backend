@@ -27,9 +27,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Cacheable(value = "user:role", key = "#roleName")
+  //  @Cacheable(value = "user:role", key = "#roleName")
     public RoleEntity getRoleByName(String roleName) {
         logger.info("get from database: " + roleName);
         return roleRepository.getFirstByName(roleName);
     }
 }
+

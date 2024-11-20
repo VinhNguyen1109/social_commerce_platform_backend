@@ -47,7 +47,7 @@ credential:
 server:
   port: 8081
 cache:
-  default-ttl-in-seconds: 20
+  default-ttl-in-seconds: 60
 
 
 
