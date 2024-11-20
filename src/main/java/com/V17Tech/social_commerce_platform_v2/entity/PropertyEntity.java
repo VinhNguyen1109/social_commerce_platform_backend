@@ -1,16 +1,18 @@
 package com.V17Tech.social_commerce_platform_v2.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "properties")
@@ -19,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Property {
+public class PropertyEntity {
     @Id
     @Column(name = "id", length = 64)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +36,14 @@ public class Property {
     private String type;
     @Column(name = "created_at")
     @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date createdAt;
     @Column(name = "update_at")
+    @LastModifiedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date updateAt;
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
-    private List<PropertyOption> propertyOptionList;
+    @JsonManagedReference
+    private List<PropertyOptionEntity> propertyOptionList;
 
 }

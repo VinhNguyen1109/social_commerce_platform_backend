@@ -1,5 +1,6 @@
 package com.V17Tech.social_commerce_platform_v2.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Table(name = "properties_options")
@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class PropertyOption {
+public class PropertyOptionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 64)
@@ -31,7 +31,8 @@ public class PropertyOption {
     private String value;
     @ManyToOne
     @JoinColumn(name = "properties_id")
-    private Property property;
+    @JsonBackReference
+    private PropertyEntity property;
     @Column(name = "created_at")
     @CreatedDate
     private Date createdAt;

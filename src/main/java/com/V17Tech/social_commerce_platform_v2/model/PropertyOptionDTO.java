@@ -1,9 +1,9 @@
 package com.V17Tech.social_commerce_platform_v2.model;
 
-import com.V17Tech.social_commerce_platform_v2.entity.Property;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)//những giá trị null thì ko được xuất ra
 public class PropertyOptionDTO {
     private Long id;
     private Long propertyId;

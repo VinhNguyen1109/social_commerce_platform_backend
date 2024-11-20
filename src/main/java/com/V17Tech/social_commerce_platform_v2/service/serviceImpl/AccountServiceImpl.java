@@ -57,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
                         .newKeycloakBuilderWithPasswordCredentials(loginRequest.getUsername(), loginRequest.getPassword())
                         .build();
                 AccessTokenResponse accessTokenResponse = keycloak.tokenManager().getAccessToken();
-        redisTemplate.opsForValue().set("token of:" + loginRequest.getUsername(), accessTokenResponse.getToken(), 1, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("token of:" + loginRequest.getUsername(), accessTokenResponse.getToken(), 30, TimeUnit.MINUTES);
 
         return LoginUserDTO.builder()
                 .accessToken(accessTokenResponse.getToken())
