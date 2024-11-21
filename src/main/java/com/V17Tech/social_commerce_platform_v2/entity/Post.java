@@ -1,5 +1,6 @@
 package com.V17Tech.social_commerce_platform_v2.entity;
 
+import com.V17Tech.social_commerce_platform_v2.model.PostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -138,4 +139,35 @@ public class Post {
     @Column(name = "updated_at")
     @LastModifiedDate
     private Date updatedAt;
+
+    public PostDTO toDTO(){
+        return PostDTO.builder()
+                .title(title)
+                .subTitle(subTitle)
+                .description(description)
+                .address(address)
+                .wardCode(ward.getCode())
+                .districtCode(district.getCode())
+                .provinceCode(province.getCode())
+                .username(account.getUsername())
+                .phoneNumber(phoneNumber)
+                .zalo(zalo)
+                .email(email)
+                .type(type)
+                .estateType(estateType)
+                .fromPrice(fromPrice)
+                .toPrice(toPrice)
+                .priceType(priceType)
+                .constructionArea(constructionArea)
+                .numBedrooms(numBedrooms)
+                .numFloors(numFloors)
+                .numToilets(numToilets)
+                .numOfView(numOfView)
+                .numOfShare(numOfShare)
+                .numOfLike(numOfLike)
+                .numOfClickContact(numOfClickContact)
+                .verified(verified)
+                .rankingPoint(rankingPoint)
+                .build();
+    }
 }

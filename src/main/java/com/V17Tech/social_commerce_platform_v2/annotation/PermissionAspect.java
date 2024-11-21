@@ -1,6 +1,5 @@
 package com.V17Tech.social_commerce_platform_v2.annotation;
 
-import com.V17Tech.social_commerce_platform_v2.constant.RoleEnum;
 import com.V17Tech.social_commerce_platform_v2.entity.AccountEntity;
 import com.V17Tech.social_commerce_platform_v2.service.AccountService;
 import com.V17Tech.social_commerce_platform_v2.util.CommonUtil;

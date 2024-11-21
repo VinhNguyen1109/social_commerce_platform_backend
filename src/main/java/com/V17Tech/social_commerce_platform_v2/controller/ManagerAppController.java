@@ -3,6 +3,7 @@ package com.V17Tech.social_commerce_platform_v2.controller;
 import com.V17Tech.social_commerce_platform_v2.entity.PropertyEntity;
 import com.V17Tech.social_commerce_platform_v2.model.PropertyDTO;
 import com.V17Tech.social_commerce_platform_v2.model.PropertyOptionDTO;
+import com.V17Tech.social_commerce_platform_v2.service.PostService;
 import com.V17Tech.social_commerce_platform_v2.service.PropertyOptionService;
 import com.V17Tech.social_commerce_platform_v2.service.PropertyService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class ManagerAppController {
     public final PropertyService propertyService;
 
     private final PropertyOptionService propertyOptionService;
+
+    private final PostService postService;
     private static final Logger logger = LoggerFactory.getLogger(ManagerAppController.class);
 
     @PostMapping("/save")
@@ -54,4 +57,10 @@ public class ManagerAppController {
         propertyOptionService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("delete successfully");
     }
+
+    @GetMapping("/verify-post")
+    public ResponseEntity<?> verifyPost(@RequestHeader Long id, @RequestHeader int status){
+        return ResponseEntity.status(HttpStatus.OK).body( postService.verifyPost(id, status));
+    }
+
 }

@@ -10,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Table(name = "user_click_contact")
@@ -23,7 +22,7 @@ public class UserClickContact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 64)
-    private UUID id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
