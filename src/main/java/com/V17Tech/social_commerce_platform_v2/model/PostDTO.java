@@ -1,6 +1,5 @@
 package com.V17Tech.social_commerce_platform_v2.model;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +13,7 @@ import java.util.Date;
 @Builder
 @Data
 public class PostDTO {
+    private Long id;
     @NotNull(message = "title is not null")
     private String title;
 

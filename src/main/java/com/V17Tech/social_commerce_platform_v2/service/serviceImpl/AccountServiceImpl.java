@@ -56,18 +56,22 @@ public class AccountServiceImpl implements AccountService {
                 Keycloak keycloak = kcProvider
                         .newKeycloakBuilderWithPasswordCredentials(loginRequest.getUsername(), loginRequest.getPassword())
                         .build();
-                AccessTokenResponse accessTokenResponse = keycloak.tokenManager().getAccessToken();
-        redisTemplate.opsForValue().set("token of:" + loginRequest.getUsername(), accessTokenResponse.getToken(), 30, TimeUnit.MINUTES);
-
-        return LoginUserDTO.builder()
-                .accessToken(accessTokenResponse.getToken())
-                .tokenType(accessTokenResponse.getTokenType())
-                .refreshToken(accessTokenResponse.getRefreshToken())
-                .expiresIn(accessTokenResponse.getExpiresIn())
-                .username(loginRequest.getUsername())
-                .lastname(accountEntity.getLastname())
-                .firstname(accountEntity.getFirstname())
-                .build();
+                try {
+                    AccessTokenResponse accessTokenResponse = keycloak.tokenManager().getAccessToken();
+                    redisTemplate.opsForValue().set("token of:" + loginRequest.getUsername(), accessTokenResponse.getToken(), 30, TimeUnit.MINUTES);
+                    return LoginUserDTO.builder()
+                            .accessToken(accessTokenResponse.getToken())
+                            .tokenType(accessTokenResponse.getTokenType())
+                            .refreshToken(accessTokenResponse.getRefreshToken())
+                            .expiresIn(accessTokenResponse.getExpiresIn())
+                            .username(loginRequest.getUsername())
+                            .lastname(accountEntity.getLastname())
+                            .firstname(accountEntity.getFirstname())
+                            .build();
+                }catch (Exception exception){
+                    logger.info("lỗi khi tạo token bởi keycloak : " + exception);
+                }
+        return  null;
     }
 
 

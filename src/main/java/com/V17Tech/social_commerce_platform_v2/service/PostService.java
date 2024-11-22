@@ -2,6 +2,7 @@ package com.V17Tech.social_commerce_platform_v2.service;
 
 import com.V17Tech.social_commerce_platform_v2.entity.Post;
 import com.V17Tech.social_commerce_platform_v2.model.PostDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface PostService {
     List<PostDTO> getPostByKeyword(String keyword);
 
     Object getByVerify(String verify);
+    List<PostDTO> getTop3Ranking();
+
+    Page<PostDTO> getPosts(String page, String size, String sort);
 }

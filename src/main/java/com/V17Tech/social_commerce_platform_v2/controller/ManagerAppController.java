@@ -1,5 +1,6 @@
 package com.V17Tech.social_commerce_platform_v2.controller;
 
+import com.V17Tech.social_commerce_platform_v2.annotation.Permission;
 import com.V17Tech.social_commerce_platform_v2.entity.PropertyEntity;
 import com.V17Tech.social_commerce_platform_v2.model.PropertyDTO;
 import com.V17Tech.social_commerce_platform_v2.model.PropertyOptionDTO;
@@ -26,39 +27,46 @@ public class ManagerAppController {
     private static final Logger logger = LoggerFactory.getLogger(ManagerAppController.class);
 
     @PostMapping("/save")
+    @Permission(role = "client_admin")
     public ResponseEntity<?> saveProperty(@RequestBody PropertyDTO propertyDTO){
         propertyService.saveProperty(propertyDTO);
         return ResponseEntity.status(HttpStatus.OK).body("save property successfully");
     }
 
     @PostMapping("/update")
+    @Permission(role = "client_admin")
     public ResponseEntity<?> updateProperty(@RequestBody PropertyDTO propertyDTO, @RequestParam Long id){
         return ResponseEntity.status(HttpStatus.OK).body(propertyService.updateProperty(propertyDTO, id));
     }
 
     @GetMapping("/delete")
+    @Permission(role = "client_admin")
     public ResponseEntity<?> deleteProperty(@RequestParam Long id){
         propertyService.deleteProperty(id);
         return ResponseEntity.status(HttpStatus.OK).body("Delete successfully");
     }
 
     @GetMapping("/get-by-id")
+    @Permission(role = "client_admin")
     public ResponseEntity<PropertyEntity> getById(@RequestParam Long id){
         return ResponseEntity.status(HttpStatus.OK).body(propertyService.getById(id));
     }
     @PostMapping("/add-property-option")
+    @Permission(role = "client_admin")
     public ResponseEntity<?> addPropertyOption(@RequestBody PropertyOptionDTO payload){
         logger.info("add property option");
         return ResponseEntity.status(HttpStatus.OK).body(propertyOptionService.insertPropertyOption(payload));
     }
 
     @GetMapping("/delete-property-option")
+    @Permission(role = "client_admin")
     public ResponseEntity<?> deletePropertyOption(@RequestParam Long id){
         propertyOptionService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("delete successfully");
     }
 
     @GetMapping("/verify-post")
+    @Permission(role = "client_admin")
     public ResponseEntity<?> verifyPost(@RequestHeader Long id, @RequestHeader int status){
         return ResponseEntity.status(HttpStatus.OK).body( postService.verifyPost(id, status));
     }

@@ -63,7 +63,7 @@ public class SecurityConfig {
                                                 .jwtAuthenticationConverter(jwtAuthenticationConverterForKeycloak())
                                 )
                 )
-                .addFilterBefore(tokenValidationFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(tokenValidationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

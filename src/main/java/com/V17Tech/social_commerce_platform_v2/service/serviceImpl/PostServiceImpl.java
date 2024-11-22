@@ -13,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -105,14 +109,33 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Object getByVerify(String verify) {
+        List<PostDTO> result = new ArrayList<>();
+        for (Post post : postRepository.getByVerified(Integer.parseInt(verify))) {
+            result.add(post.toDTO());
+        }
+        return result;
+    }
+
+    @Override
+    public List<PostDTO> getTop3Ranking() {
+        List<PostDTO> result = new ArrayList<>();
+        for (Post post: postRepository.findTop3ByOrderByRankingPointDesc()) {
+            result.add(post.toDTO());
+        }
+        return result;
+    }
+
+    @Override
+    public Page<PostDTO> getPosts(String page, String size, String sort) {
+        String[] sortParams = sort.split(",");
+        Sort sorting = Sort.by(Sort.Direction.fromString(sortParams[1]), sortParams[0]);
+        Pageable pageable;
         try {
-            List<PostDTO> result = new ArrayList<>();
-            for (Post post : postRepository.getByVerified(Integer.parseInt(verify))) {
-                result.add(post.toDTO());
-            }
-            return result;
-        }catch (NumberFormatException exception){
-            throw exception;
+            //    Pageable pageable = PageRequest.of(page, size, Sort.by("title").ascending());
+            pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), sorting);
+            return postRepository.findAllToDTO(pageable);
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("can not parse number!");
         }
     }
 }

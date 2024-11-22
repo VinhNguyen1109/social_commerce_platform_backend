@@ -142,6 +142,7 @@ public class Post {
 
     public PostDTO toDTO(){
         return PostDTO.builder()
+                .id(id)
                 .title(title)
                 .subTitle(subTitle)
                 .description(description)
