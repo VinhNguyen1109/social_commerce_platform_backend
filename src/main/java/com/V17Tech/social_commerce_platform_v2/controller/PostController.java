@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,5 +27,15 @@ public class PostController {
     @PostMapping("/get-by-title")
     public ResponseEntity<?> getByTitle( @RequestHeader String title){
         return ResponseEntity.status(HttpStatus.OK).body( postService.getPostByTitle(title));
+    }
+
+    @GetMapping("/get-by-keyword")
+    public ResponseEntity<?> getPostByKeyword(@RequestHeader String keyword){
+        return ResponseEntity.status(HttpStatus.OK).body( postService.getPostByKeyword(keyword.trim()));
+    }
+
+    @GetMapping("/get-by-status")
+    public ResponseEntity<?> getPostByVerify(@RequestHeader String verify){
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getByVerify(verify));
     }
 }

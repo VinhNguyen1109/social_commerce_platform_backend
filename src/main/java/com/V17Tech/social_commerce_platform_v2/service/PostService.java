@@ -15,4 +15,8 @@ public interface PostService {
     List<PostDTO> getPostByTitle(String title);
 
     PostDTO verifyPost(Long id, int status);
+
+    List<PostDTO> getPostByKeyword(String keyword);
+
+    Object getByVerify(String verify);
 }

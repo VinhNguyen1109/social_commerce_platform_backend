@@ -40,7 +40,6 @@ public class PostServiceImpl implements PostService {
         if(postDTO.getFromPrice() >= postDTO.getToPrice() || postDTO.getFromPrice() < 0){
             throw new BusinessException("Sai format price với post");
         }
-
         if(account == null) throw new BusinessException("Không tồn tại tài khoản với username: " + username);
         postRepository.save(Post.builder()
                         .title(postDTO.getTitle())
@@ -92,8 +91,28 @@ public class PostServiceImpl implements PostService {
         //2: khong dong y
         //0: dang cho
         post.setVerified(verify);
-        logger.info("==========================");
-        logger.info(post.getStatus());
         return postRepository.save(post).toDTO();
+    }
+
+    @Override
+    public List<PostDTO> getPostByKeyword(String keyword) {
+       List<PostDTO> result = new ArrayList<>();
+        for (Post post : postRepository.getPostByKeyword(keyword)) {
+            result.add(post.toDTO());
+        }
+        return result;
+    }
+
+    @Override
+    public Object getByVerify(String verify) {
+        try {
+            List<PostDTO> result = new ArrayList<>();
+            for (Post post : postRepository.getByVerified(Integer.parseInt(verify))) {
+                result.add(post.toDTO());
+            }
+            return result;
+        }catch (NumberFormatException exception){
+            throw exception;
+        }
     }
 }

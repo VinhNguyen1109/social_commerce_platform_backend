@@ -7,7 +7,6 @@ public enum ActionPostEnum {
     LIKE("1"),
     SHARE("2"),
     CLICK("3"),
-
     VIEW("4");
 
     private final String value;
