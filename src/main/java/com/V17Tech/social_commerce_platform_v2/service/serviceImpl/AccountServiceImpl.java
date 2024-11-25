@@ -74,9 +74,6 @@ public class AccountServiceImpl implements AccountService {
         return  null;
     }
 
-
-
-
     @Override
     public String resetPassword(String token, String newPassword) {
         String username =  CommonUtil.getUserNameFromToken(token);
