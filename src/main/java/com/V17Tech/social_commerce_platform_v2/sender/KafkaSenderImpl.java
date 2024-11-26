@@ -30,5 +30,7 @@ public class KafkaSenderImpl implements KafkaSender {
             logger.error("Lỗi khi gửi kafka: " + e.getMessage());
         }
     }
+
+
 }
 

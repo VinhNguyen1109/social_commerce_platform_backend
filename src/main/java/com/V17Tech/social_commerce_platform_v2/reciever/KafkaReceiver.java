@@ -2,7 +2,9 @@ package com.V17Tech.social_commerce_platform_v2.reciever;
 
 import com.V17Tech.social_commerce_platform_v2.constant.ActionPostEnum;
 import com.V17Tech.social_commerce_platform_v2.entity.Post;
+import com.V17Tech.social_commerce_platform_v2.entity.mongo.UserJourneyEntity;
 import com.V17Tech.social_commerce_platform_v2.model.UserClickContactDTO;
+import com.V17Tech.social_commerce_platform_v2.repository.UserJourneyRepository;
 import com.V17Tech.social_commerce_platform_v2.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,15 +12,18 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class KafkaReceiver {
     private final ObjectMapper objectMapper;
     private final PostService postService;
+
+    private final UserJourneyRepository userJourneyRepository;
 
     private final Logger logger = LoggerFactory.getLogger(KafkaReceiver.class);
 
@@ -65,6 +70,16 @@ public class KafkaReceiver {
         }catch (JsonProcessingException e){
             logger.info("can not map data");
         }
-
+    }
+    @KafkaListener(topics = "${spring.kafka.topics.user-journey}")
+    public void saveUserJourney(String data){
+        try {
+            UserJourneyEntity userJourney =  objectMapper.readValue(data, UserJourneyEntity.class);
+            userJourney.setStatus(0);
+            userJourney.setTime(new Date());
+            userJourneyRepository.save(userJourney);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

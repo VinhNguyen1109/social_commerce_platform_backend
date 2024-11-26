@@ -44,7 +44,7 @@ public class KeyCloakProvider {
     @Value("${keycloak.admin.password}")
     private String password;
 
-    @Value("${credential.secret-admin}")
+    @Value("${keycloak.credential.secret-admin}")
     private String ADMIN_SECRET;
     @Value("${keycloak.realm}")
     private String REALM;

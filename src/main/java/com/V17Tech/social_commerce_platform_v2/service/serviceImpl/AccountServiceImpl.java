@@ -3,7 +3,9 @@ package com.V17Tech.social_commerce_platform_v2.service.serviceImpl;
 
 import com.V17Tech.social_commerce_platform_v2.configuration.KeyCloakProvider;
 import com.V17Tech.social_commerce_platform_v2.entity.AccountEntity;
+import com.V17Tech.social_commerce_platform_v2.entity.mongo.LogUserLogin;
 import com.V17Tech.social_commerce_platform_v2.service.AccountService;
+import com.V17Tech.social_commerce_platform_v2.service.LogUserLoginService;
 import lombok.RequiredArgsConstructor;
 import com.V17Tech.social_commerce_platform_v2.model.LoginRequest;
 import com.V17Tech.social_commerce_platform_v2.model.LoginUserDTO;
@@ -16,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
 
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final LogUserLoginService logUserLoginService;
     @Override
     public AccountEntity getFirstByUsername(String username) {
         return accountRepository.getFirstByUsername(username);
@@ -57,6 +60,11 @@ public class AccountServiceImpl implements AccountService {
                         .newKeycloakBuilderWithPasswordCredentials(loginRequest.getUsername(), loginRequest.getPassword())
                         .build();
                 try {
+                    //save log
+                    LogUserLogin userLogin = LogUserLogin.builder()
+                            .username(loginRequest.getUsername())
+                            .build();
+                    logUserLoginService.saveLogLogin(userLogin);
                     AccessTokenResponse accessTokenResponse = keycloak.tokenManager().getAccessToken();
                     redisTemplate.opsForValue().set("token of:" + loginRequest.getUsername(), accessTokenResponse.getToken(), 30, TimeUnit.MINUTES);
                     return LoginUserDTO.builder()

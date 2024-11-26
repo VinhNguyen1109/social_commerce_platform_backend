@@ -1,18 +1,14 @@
 package com.V17Tech.social_commerce_platform_v2.service;
 
-import com.V17Tech.social_commerce_platform_v2.entity.UserJourneyEntity;
-import com.V17Tech.social_commerce_platform_v2.model.UserEvent;
-import com.V17Tech.social_commerce_platform_v2.model.UserJourneyDTO;
+import com.V17Tech.social_commerce_platform_v2.entity.mongo.UserJourneyEntity;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public interface UserJourneyService {
+     List<UserJourneyEntity> getAll();
+     UserJourneyEntity saveUserJourney(UserJourneyEntity userJourney, String token, String sessionId);
 
-    UserJourneyDTO saveUserJourney(UserEvent userEvent, String token, String sessionId) throws IOException;
-
-    UserJourneyDTO getUserJourneyByUsernameAndSession(String token, String sessionId) throws IOException;
-
-    List<UserJourneyDTO> getAllUserJourneyOfUser(String token) throws IOException;
-
+     List<UserJourneyEntity> getUserJourneyByUsernameAndSessionId(String token, String sessionId) throws JsonProcessingException;
 }
