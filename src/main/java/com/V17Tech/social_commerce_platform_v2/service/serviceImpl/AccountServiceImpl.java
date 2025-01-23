@@ -40,6 +40,13 @@ public class AccountServiceImpl implements AccountService {
     private final RedisTemplate<String, String> redisTemplate;
 
     private final LogUserLoginService logUserLoginService;
+
+
+    @Override
+    public Long countNoAccount() {
+        return accountRepository.countById();
+    }
+
     @Override
     public AccountEntity getFirstByUsername(String username) {
         return accountRepository.getFirstByUsername(username);

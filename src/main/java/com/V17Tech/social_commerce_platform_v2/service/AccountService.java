@@ -5,9 +5,12 @@ import com.V17Tech.social_commerce_platform_v2.model.LoginRequest;
 import com.V17Tech.social_commerce_platform_v2.model.LoginUserDTO;
 
 public interface AccountService {
-     AccountEntity getFirstByUsername(String username);
 
-     void saveAccount(AccountEntity accountEntity);
+    Long countNoAccount();
+
+    AccountEntity getFirstByUsername(String username);
+
+    void saveAccount(AccountEntity accountEntity);
 
      LoginUserDTO login (LoginRequest loginRequest) ;
 

@@ -33,6 +33,7 @@ spring:
       test-kafka: test-kafka
       post-click-contact : post-click-contact
       user-journey: user-journey
+      create-schedule: create-schedule
 keycloak:
   auth:
     server:

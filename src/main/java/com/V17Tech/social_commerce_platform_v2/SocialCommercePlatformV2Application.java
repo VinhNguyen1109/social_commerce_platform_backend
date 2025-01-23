@@ -15,7 +15,6 @@ import java.util.TimeZone;
 @EnableCaching
 @EnableScheduling
 public class SocialCommercePlatformV2Application {
-
 	public static void main(String[] args) {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
 		SpringApplication.run(SocialCommercePlatformV2Application.class, args);

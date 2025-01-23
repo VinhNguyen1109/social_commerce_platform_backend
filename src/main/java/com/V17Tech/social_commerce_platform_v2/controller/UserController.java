@@ -68,4 +68,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.logout( token));
     }
 
+    @GetMapping("/count")
+    public Long countNoAccount(){
+        return accountService.countNoAccount();
+    }
+
 }
