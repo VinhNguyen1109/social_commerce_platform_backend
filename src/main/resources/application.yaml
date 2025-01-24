@@ -34,6 +34,9 @@ spring:
       post-click-contact : post-click-contact
       user-journey: user-journey
       create-schedule: create-schedule
+      send-email: send-email
+    schedule:
+      batchSize : 5
 keycloak:
   auth:
     server:
@@ -49,6 +52,7 @@ server:
   port: 8081
 cache:
   default-ttl-in-seconds: 20
+
 
 
 

@@ -23,12 +23,11 @@ public class NotificationScheduleController {
                 .build();
     }
 
-    @GetMapping("/do-schedule")
-    public ResultInfo<?> scheduleNotification(){
-        notificationScheduleService.doScheduleWaitWorking();
+    @PatchMapping("/cancel/{id}")
+    public ResultInfo<?> cancelSchedule(@PathVariable Long id){
         return ResultInfo.builder()
                 .status(ResultInfo.RESULT_OK)
-                .message("ok")
+                .message(notificationScheduleService.cancelScheduleWithId(id))
                 .build();
     }
 }

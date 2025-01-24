@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NotificationReceiverRepository extends JpaRepository<NotificationReceiverEntity, Long> {
+    NotificationReceiverEntity getFirstByUsername(String username);
+
+    NotificationReceiverEntity getFirstById(Long id);
 }

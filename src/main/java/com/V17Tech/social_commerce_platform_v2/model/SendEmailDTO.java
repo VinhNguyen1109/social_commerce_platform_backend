@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserClickContactDTO {
-
-    private Long postId;
-
-    private String type;
+public class SendEmailDTO {
+    private String fromEmail;
+    private String toEmail;
+    private String title;
+    private String content;
 }

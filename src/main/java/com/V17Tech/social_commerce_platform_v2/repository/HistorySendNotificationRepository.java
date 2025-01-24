@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HistorySendNotificationRepository extends JpaRepository<HistorySendNotificationEntity, Long> {
+    HistorySendNotificationEntity getFirstById(Long id);
 }

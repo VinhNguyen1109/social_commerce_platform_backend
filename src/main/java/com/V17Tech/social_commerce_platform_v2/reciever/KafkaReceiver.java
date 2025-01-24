@@ -3,8 +3,10 @@ package com.V17Tech.social_commerce_platform_v2.reciever;
 import com.V17Tech.social_commerce_platform_v2.constant.ActionPostEnum;
 import com.V17Tech.social_commerce_platform_v2.entity.Post;
 import com.V17Tech.social_commerce_platform_v2.entity.mongo.UserJourneyEntity;
+import com.V17Tech.social_commerce_platform_v2.model.SendEmailDTO;
 import com.V17Tech.social_commerce_platform_v2.model.UserClickContactDTO;
 import com.V17Tech.social_commerce_platform_v2.repository.UserJourneyRepository;
+import com.V17Tech.social_commerce_platform_v2.service.EmailService;
 import com.V17Tech.social_commerce_platform_v2.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +26,8 @@ public class KafkaReceiver {
     private final PostService postService;
 
     private final UserJourneyRepository userJourneyRepository;
+
+    private final EmailService emailService;
 
     private final Logger logger = LoggerFactory.getLogger(KafkaReceiver.class);
 
@@ -80,6 +84,19 @@ public class KafkaReceiver {
             userJourneyRepository.save(userJourney);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        }
+    }
+    @KafkaListener(topics = "${spring.kafka.topics.send-email}")
+    public void sendEmail(String data){
+        try {
+            SendEmailDTO sendEmailDTO =  objectMapper.readValue(data, SendEmailDTO.class);
+            logger.info("listen topic");
+            emailService.sendSimpleEmail(sendEmailDTO.getToEmail(),
+                    sendEmailDTO.getFromEmail(),
+                    sendEmailDTO.getTitle(),
+                    sendEmailDTO.getContent());
+        }catch (JsonProcessingException exception){
+            logger.error("Lỗi khi mapper data qua kafka");
         }
     }
 }
