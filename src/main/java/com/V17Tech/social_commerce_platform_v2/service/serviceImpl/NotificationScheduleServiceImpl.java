@@ -99,7 +99,7 @@ public class NotificationScheduleServiceImpl implements NotificationScheduleServ
         List<NotificationEntity> notificationEntities = notificationRepository.getByNotificationScheduleId(scheduleId);
         logger.info("số lượng noti với id lập lịch: " + notificationEntities.size());
         for (NotificationEntity notification: notificationEntities) {
-            notificationService.sendNotification(TypeReceive.EMAIL.getValue(), notification);
+            notificationService.sendNotification(notification);
         }
     }
 }

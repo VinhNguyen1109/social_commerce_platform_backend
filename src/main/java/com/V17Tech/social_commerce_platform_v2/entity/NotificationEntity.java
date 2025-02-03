@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -65,4 +66,15 @@ public class NotificationEntity {
 
     @Column(name = "short_content")
     private String shortContent;
+
+    @Column(name = "type_receive")
+    private String typeReceive;
+
+    @ManyToMany
+    @JoinTable(
+            name = "notification_type_send",
+            joinColumns = @JoinColumn(name = "notification_id"),
+            inverseJoinColumns = @JoinColumn(name = "type_receive_id")
+    )
+    private List<TypeReceiveNotificationEntity> typeReceives;
 }

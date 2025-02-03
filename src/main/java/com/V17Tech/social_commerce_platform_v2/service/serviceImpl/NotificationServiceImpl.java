@@ -34,7 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final String apiUrl = "http://localhost:8081/api/auth/users/count";
 
     @Override
-    public void sendNotification(String typeReceive, NotificationEntity notification) {
+    public void sendNotification(NotificationEntity notification) {
 
         Long totalUsers = callCountApi();
         int numberOfWorkers = (int) Math.ceil((double) totalUsers / batchSize);
@@ -45,7 +45,7 @@ public class NotificationServiceImpl implements NotificationService {
             Long end = start + batchSize;
             logger.info("Xử lý từ người dùng thứ: " + start + " đến " + end);
             List<AccountEntity> batchUser = accountRepository.getAccountListToSendNotification(start, end);
-            notificationWorker.sendBatch(batchUser, notification, typeReceive);
+            notificationWorker.sendBatch(batchUser, notification);
         }
     }
 

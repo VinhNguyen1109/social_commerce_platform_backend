@@ -2,7 +2,8 @@ package com.V17Tech.social_commerce_platform_v2.util;
 
 public enum TypeReceive {
     EMAIL("email"),
-    PUSH("push notification");
+    PUSH("push notification"),
+    SMS("sms");
 
     private final String value;
 

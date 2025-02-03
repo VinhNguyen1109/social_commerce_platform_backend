@@ -23,7 +23,7 @@ public class NotificationController {
     }
     @GetMapping("/send")
     public ResultInfo<?> sendNotification(@RequestBody NotificationEntity data){
-        notificationService.sendNotification("email", data);
+        notificationService.sendNotification(data);
         return ResultInfo.builder()
                 .message("ok")
                 .status(ResultInfo.RESULT_OK)
