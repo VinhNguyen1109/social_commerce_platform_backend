@@ -9,6 +9,5 @@ public interface NotificationScheduleService {
      List<NotificationScheduleEntity> getScheduleWaitWorking();
 
 
-
      String cancelScheduleWithId(Long id);
 }

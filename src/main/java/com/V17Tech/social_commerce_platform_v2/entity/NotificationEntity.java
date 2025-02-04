@@ -70,7 +70,7 @@ public class NotificationEntity {
     @Column(name = "type_receive")
     private String typeReceive;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "notification_type_send",
             joinColumns = @JoinColumn(name = "notification_id"),

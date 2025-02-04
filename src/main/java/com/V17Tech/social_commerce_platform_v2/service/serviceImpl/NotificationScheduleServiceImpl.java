@@ -8,7 +8,6 @@ import com.V17Tech.social_commerce_platform_v2.repository.NotificationScheduleRe
 import com.V17Tech.social_commerce_platform_v2.service.NotificationScheduleService;
 import com.V17Tech.social_commerce_platform_v2.service.NotificationService;
 import com.V17Tech.social_commerce_platform_v2.util.Status;
-import com.V17Tech.social_commerce_platform_v2.util.TypeReceive;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +30,6 @@ public class NotificationScheduleServiceImpl implements NotificationScheduleServ
 
     @Override
     public NotificationScheduleEntity createSchedule(NotificationScheduleEntity data) {
-        logger.info("=============================");
-        logger.info(data.getDateFrom() + "");
         data.setStatus(Status.ACTIVE.getValue());
         scheduleNotification(scheduleRepository.save(data));
         return data;
@@ -100,6 +97,7 @@ public class NotificationScheduleServiceImpl implements NotificationScheduleServ
         logger.info("số lượng noti với id lập lịch: " + notificationEntities.size());
         for (NotificationEntity notification: notificationEntities) {
             notificationService.sendNotification(notification);
+            //notificationService.sendNotificationV2(notification);
         }
     }
 }

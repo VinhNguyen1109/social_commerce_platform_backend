@@ -4,6 +4,7 @@ import com.V17Tech.social_commerce_platform_v2.entity.*;
 import com.V17Tech.social_commerce_platform_v2.model.SendEmailDTO;
 import com.V17Tech.social_commerce_platform_v2.repository.HistorySendNotificationRepository;
 import com.V17Tech.social_commerce_platform_v2.repository.NotificationReceiverRepository;
+import com.V17Tech.social_commerce_platform_v2.repository.NotificationRepository;
 import com.V17Tech.social_commerce_platform_v2.sender.KafkaSender;
 import com.V17Tech.social_commerce_platform_v2.util.TypeReceive;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ public class NotificationWorker {
     private final KafkaSender sender;
     private final NotificationReceiverRepository receiverRepository;
     private final HistorySendNotificationRepository historySendNotificationRepository;
+
+    private final NotificationRepository notificationRepository;
     private final Logger logger = LoggerFactory.getLogger(NotificationWorker.class);
     @Value("${spring.mail.username}")
     private String fromEmail;
@@ -36,7 +39,8 @@ public class NotificationWorker {
                         .build());
             }
             NotificationReceiverEntity receiver = receiverRepository.getFirstByUsername(account.getUsername());
-            List<TypeReceiveNotificationEntity> typeReceives = notification.getTypeReceives();
+            List<TypeReceiveNotificationEntity> typeReceives = notificationRepository.getTypeReceiveByNotificationId(notification.getId());
+            logger.info("check type list:" + typeReceives.size());
             for (TypeReceiveNotificationEntity type: typeReceives) {
                 HistorySendNotificationEntity history = HistorySendNotificationEntity.builder()
                         .notificationId(notification.getId())
@@ -44,14 +48,15 @@ public class NotificationWorker {
                         .notificationReceiverId(receiver.getId())
                         .build();
                 historySendNotificationRepository.save(history);
-                if(type.getDescription() == TypeReceive.EMAIL.getValue()){
+                logger.info(type.getDescription());
+                logger.info(TypeReceive.EMAIL.getValue());
+                if(type.getDescription().equalsIgnoreCase(TypeReceive.EMAIL.getValue())){
                     SendEmailDTO sendEmailDTO = SendEmailDTO.builder()
                             .fromEmail(fromEmail)
                             .toEmail(receiver.getEmail())
                             .title(notification.getTitle())
                             .content(notification.getContent())
                             .build();
-                    logger.info("checkkk send =====================");
                     sender.send(topicSendEmail, sendEmailDTO);
                     logger.info("Đã gửi email cho người dùng: {}", account.getUsername());
                 }
